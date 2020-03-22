@@ -14,22 +14,26 @@ namespace AhorcadoMoha
 
     {
         //almacena la palabra oculta que hay que adivinar
-        String palabraOculta = "_";
+        String palabraOculta = "";
         //variable que almacena el numero de fallos
         int numeroFallos = 0;
 
-        private String eligePalabra()
+
+        private String SeleccionaPalabra()
         {
-            String[] listaPalabras = { "CORONAVIRUS", "UNIVERSO", "ADIOS", "CUARENTENA", "AHORCADO", "VACUNA", "PROGRAMACION" };
-            Random aleatorio = new Random(); //variable aleatoria para elegir una palabra al azar
-            int posicion = aleatorio.Next(listaPalabras.Length);
-            return listaPalabras[posicion].ToUpper();
+            String[] ConjuntodePalabras
+                = { "CORONAVIRUS", "UNIVERSO", "ADIOS", "CUARENTENA", "AHORCADO", "VACUNA", "PROGRAMACION" };
+            Random aleatorio = new Random();
+            int posicion = aleatorio.Next(ConjuntodePalabras.Length);
+            return ConjuntodePalabras[posicion].ToUpper();
         }
+
+
 
         public Form1()
         {
             InitializeComponent();
-            palabraOculta = eligePalabra();
+            palabraOculta = SeleccionaPalabra();
             String guiones = "";
             for (int i = 0; i < palabraOculta.Length; i++)
             {
@@ -38,15 +42,20 @@ namespace AhorcadoMoha
                 }
                 label1.Text = guiones;
             }
-        
-    }
+
+        }
+
+
 
         private void letraPulsada(object sender, EventArgs e)
 
         {
+
             //casteo el objeto a botón. Sólo va a poder ser botón porque
             //sólo se genera en los botones
             Button miBoton = (Button)sender;
+            //esto no permite volver a usar la palabra ya usada
+            miBoton.Hide();
             String letra = miBoton.Text;
             letra = letra.ToUpper();
             //chequear si la letra esta en la palabra oculta
@@ -55,21 +64,22 @@ namespace AhorcadoMoha
                 int posicion = palabraOculta.IndexOf(letra);
                 label1.Text = label1.Text.Remove(2 * posicion, 1).Insert(2 * posicion, letra);
 
-                for (int i = 0; i < palabraOculta.Length; i++)
+                for (int i = posicion; i < palabraOculta.Length; i++)
                 {
-                    if (palabraOculta[i] == letra[0]) {
+                    if (palabraOculta[i] == letra[0])
+                    {
                         label1.Text = label1.Text.Remove(2 * i, 1).Insert(2 * i, letra);
-                    
-                        
-                            
-                        }
+
+
+
                     }
-                    }
+                }
+            }
             else
             {
                 numeroFallos++;
-                
-                    
+
+
             }
             if (!label1.Text.Contains('_'))
             {
